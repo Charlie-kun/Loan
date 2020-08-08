@@ -1,4 +1,4 @@
-import numpy as np
+import numpy as np      #agent use numpy
 import utils
 
 
@@ -35,9 +35,9 @@ class Agent:
         self.delayed_reward_threshold = delayed_reward_threshold
 
         # Agent
-        self.initial_balance = 0  # Seed money
-        self.balance = 0  # Balance
-        self.num_stocks = 0  # number of present Stock.
+        self.initial_balance = 0  # Seed money, Initial investment
+        self.balance = 0  # Balance, Cash
+        self.num_stocks = 0  # number of present Stocks.
         # portfolio value : balance + num_stocks * {Stock Value}
         self.portfolio_value = 0 
         self.base_portfolio_value = 0  # studied PV value
@@ -53,7 +53,7 @@ class Agent:
         self.ratio_hold = 0  # stock rate
         self.ratio_portfolio_value = 0  # portfolio value rate
 
-    def reset(self):
+    def reset(self):        #Agent state reset.
         self.balance = self.initial_balance
         self.num_stocks = 0
         self.portfolio_value = self.initial_balance
@@ -68,10 +68,10 @@ class Agent:
     def reset_exploration(self):
         self.exploration_base = 0.5 + np.random.rand() / 2
 
-    def set_balance(self, balance):
+    def set_balance(self, balance):     #Setting of Seed money.
         self.initial_balance = balance
 
-    def get_states(self):
+    def get_states(self):       #Get a agent states.
         self.ratio_hold = self.num_stocks / int(
             self.portfolio_value / self.environment.get_price())
         self.ratio_portfolio_value = (
@@ -82,6 +82,7 @@ class Agent:
             self.ratio_portfolio_value
         )
 
+    #Decide agent action (expore, hold, sell, buy, etc)
     def decide_action(self, pred_value, pred_policy, epsilon):
         confidence = 0.
 
@@ -117,19 +118,19 @@ class Agent:
 
         return action, confidence, exploration
 
-    def validate_action(self, action):
+    def validate_action(self, action):  #Judge agent behavior
         if action == Agent.ACTION_BUY:
             # Check buy one stock.
             if self.balance < self.environment.get_price() * (
                 1 + self.TRADING_CHARGE) * self.min_trading_unit:
                 return False
         elif action == Agent.ACTION_SELL:
-            # 주식 잔고가 있는지 확인 
+            # Check for stocks balance
             if self.num_stocks <= 0:
                 return False
         return True
 
-    def decide_trading_unit(self, confidence):
+    def decide_trading_unit(self, confidence):      #decide trading stocks unit.
         if np.isnan(confidence):
             return self.min_trading_unit
         added_traiding = max(min(
@@ -139,7 +140,7 @@ class Agent:
         ), 0)
         return self.min_trading_unit + added_traiding
 
-    def act(self, action, confidence):
+    def act(self, action, confidence):      #Agent act
         if not self.validate_action(action):
             action = Agent.ACTION_HOLD
 
