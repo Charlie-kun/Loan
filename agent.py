@@ -21,16 +21,16 @@ class Agent:
     ACTIONS = [ACTION_BUY, ACTION_SELL]
     NUM_ACTIONS = len(ACTIONS)  #The number of outputs to be considered in the artificial neural network
 
+    #Constructor
     def __init__(
-        self, environment, min_trading_unit=1, max_trading_unit=2, 
-        delayed_reward_threshold=.05):
+        self, environment, min_trading_unit=1, max_trading_unit=2, delayed_reward_threshold=.05):
         # Environment
         # Environment of now stock value
         self.environment = environment
 
         # Min, Max trading unit, Limited delay bonus
-        self.min_trading_unit = min_trading_unit  # 최소 단일 거래 단위
-        self.max_trading_unit = max_trading_unit  # 최대 단일 거래 단위
+        self.min_trading_unit = min_trading_unit  # Min trading unit
+        self.max_trading_unit = max_trading_unit  # Max trading unit
         # Limited delay bonus
         self.delayed_reward_threshold = delayed_reward_threshold
 
@@ -65,6 +65,7 @@ class Agent:
         self.ratio_hold = 0
         self.ratio_portfolio_value = 0
 
+    #decide Action and exploration.
     def reset_exploration(self):
         self.exploration_base = 0.5 + np.random.rand() / 2
 
@@ -86,7 +87,7 @@ class Agent:
     def decide_action(self, pred_value, pred_policy, epsilon):
         confidence = 0.
 
-        pred = pred_policy
+        pred = pred_policy      #predict method.
         if pred is None:
             pred = pred_value
 
