@@ -39,6 +39,6 @@ class PolicyNetwork:
             if model_path is not None and self.model is not None:
                 self.model.save_weights(model_path, overwrite=True)
 
-        def load_model(self, model_path):
+        def load_model(self, model_path):       #Load policy neural network learning
             if model_path is not None:
                 self.model.load_weights(model_path)
