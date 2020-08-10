@@ -32,10 +32,10 @@ class PolicyNetwork:
             self.prob = self.model.predict(np.array(sample).reshape((1, -1, self.input_dim)))[0]    #Change array for keras input type
             return self.prob
 
-        def train_on_batch(self, x, y):
+        def train_on_batch(self, x, y):     #policy neural network learning
             return self.modele.tain_on_batch(x, y)
 
-        def save_model(self, model_path):
+        def save_model(self, model_path):       #Save policy neural network learning
             if model_path is not None and self.model is not None:
                 self.model.save_weights(model_path, overwrite=True)
 
