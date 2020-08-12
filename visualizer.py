@@ -23,24 +23,24 @@ class Visualizer:
     def prepare(self, chart_data, title):
         self.title = title
         with lock:
-            # 캔버스를 초기화하고 5개의 차트를 그릴 준비
+            # Initialize Canvas and ready for 5 chart drawing. 캔버스를 초기화하고 5개의 차트를 그릴 준비
             self.fig, self.axes = plt.subplots(
                 nrows=5, ncols=1, facecolor='w', sharex=True)
             for ax in self.axes:
-                # 보기 어려운 과학적 표기 비활성화
+                # Scientific mark hide.
                 ax.get_xaxis().get_major_formatter() \
                     .set_scientific(False)
                 ax.get_yaxis().get_major_formatter() \
                     .set_scientific(False)
-                # y axis 위치 오른쪽으로 변경
+                # y axis position move to right.
                 ax.yaxis.tick_right()
-            # 차트 1. 일봉 차트
-            self.axes[0].set_ylabel('Env.')  # y 축 레이블 표시
+            # chart 1. daily chart
+            self.axes[0].set_ylabel('Env.')  # y axis label show.
             x = np.arange(len(chart_data))
-            # open, high, low, close 순서로된 2차원 배열
+            # open, high, low, close 2nd dimension array in order
             ohlc = np.hstack((
                 x.reshape(-1, 1), np.array(chart_data)[:, 1:-1]))
-            # 양봉은 빨간색으로 음봉은 파란색으로 표시
+            # plus chart is red, minus chart is blue showed.
             candlestick_ohlc(
                 self.axes[0], ohlc, colorup='r', colordown='b')
             # 거래량 가시화
