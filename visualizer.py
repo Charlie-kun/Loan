@@ -14,11 +14,11 @@ class Visualizer:
 
     def __init__(self, vnet=False):
         self.canvas = None
-        # 캔버스 같은 역할을 하는 Matplotlib의 Figure 클래스 객체
+        # Matplotlib Figure class object like a canvas
         self.fig = None
-        # 차트를 그리기 위한 Matplotlib의 Axes 클래스 객체
+        # Matplotlib Axes class object for draw a chart.
         self.axes = None
-        self.title = ''  # 그림 제목
+        self.title = ''  # chart name
 
     def prepare(self, chart_data, title):
         self.title = title
