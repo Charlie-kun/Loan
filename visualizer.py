@@ -23,7 +23,7 @@ class Visualizer:
     def prepare(self, chart_data, title):
         self.title = title
         with lock:
-            # Initialize Canvas and ready for 5 chart drawing. 캔버스를 초기화하고 5개의 차트를 그릴 준비
+            # Initialize Canvas and ready for 5 chart drawing.
             self.fig, self.axes = plt.subplots(
                 nrows=5, ncols=1, facecolor='w', sharex=True)
             for ax in self.axes:
@@ -43,7 +43,7 @@ class Visualizer:
             # plus chart is red, minus chart is blue showed.
             candlestick_ohlc(
                 self.axes[0], ohlc, colorup='r', colordown='b')
-            # 거래량 가시화
+            # Display Trade Volume
             ax = self.axes[0].twinx()
             volume = np.array(chart_data)[:, -1].tolist()
             ax.bar(x, volume, color='b', alpha=0.3)
@@ -53,13 +53,13 @@ class Visualizer:
             outvals_value=[], outvals_policy=[], exps=None, 
             learning_idxes=None, initial_balance=None, pvs=None):
         with lock:
-            x = np.arange(len(actions))  # 모든 차트가 공유할 x축 데이터
-            actions = np.array(actions)  # 에이전트의 행동 배열
-            # 가치 신경망의 출력 배열
+            x = np.arange(len(actions))  # x axis for all chart.
+            actions = np.array(actions)  # agent's action array.
+            # The output array of the value neural.
             outvals_value = np.array(outvals_value)
-            # 정책 신경망의 출력 배열
+            # The output array of the policy neural network.
             outvals_policy = np.array(outvals_policy)
-            # 초기 자본금 배열
+            # First seed money array
             pvs_base = np.zeros(len(actions)) + initial_balance
 
             # 차트 2. 에이전트 상태 (행동, 보유 주식 수)
