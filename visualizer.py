@@ -69,24 +69,24 @@ class Visualizer:
                     self.axes[1].axvline(i, color=color, alpha=0.1)
             self.axes[1].plot(x, num_stocks, '-k')  # display for number of held stock
 
-            # 차트 3. 가치 신경망
+            # Chart 3. Policy and output of value Neural network.
             if len(outvals_value) > 0:
                 max_actions = np.argmax(outvals_value, axis=1)
                 for action, color in zip(action_list, self.COLORS):
-                    # 배경 그리기
+                    # Draw background
                     for idx in x:
                         if max_actions[idx] == action:
                             self.axes[2].axvline(idx, 
                                 color=color, alpha=0.1)
-                    # 가치 신경망 출력의 tanh 그리기
+                    # neural network output draw tanh.
                     self.axes[2].plot(x, outvals_value[:, action], 
                         color=color, linestyle='-')
             
-            # 차트 4. 정책 신경망
-            # 탐험을 노란색 배경으로 그리기
+            # Chart 4. policy neural network
+            # Yellow background color is explore.
             for exp_idx in exps:
                 self.axes[3].axvline(exp_idx, color='y')
-            # 행동을 배경으로 그리기
+            # Draw action.
             _outvals = outvals_policy if len(outvals_policy) > 0 \
                 else outvals_value
             for idx, outval in zip(x, _outvals):
@@ -94,11 +94,11 @@ class Visualizer:
                 if np.isnan(outval.max()):
                     continue
                 if outval.argmax() == Agent.ACTION_BUY:
-                    color = 'r'  # 매수 빨간색
+                    color = 'r'  # Buy red
                 elif outval.argmax() == Agent.ACTION_SELL:
-                    color = 'b'  # 매도 파란색
+                    color = 'b'  # sell blue
                 self.axes[3].axvline(idx, color=color, alpha=0.1)
-            # 정책 신경망의 출력 그리기
+            # Draw policy neural network output.
             if len(outvals_policy) > 0:
                 for action, color in zip(action_list, self.COLORS):
                     self.axes[3].plot(
