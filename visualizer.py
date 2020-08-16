@@ -105,7 +105,7 @@ class Visualizer:
                         x, outvals_policy[:, action], 
                         color=color, linestyle='-')
 
-            # 차트 5. 포트폴리오 가치
+            # Chart 5. Portfolio Value
             self.axes[4].axhline(
                 initial_balance, linestyle='-', color='gray')
             self.axes[4].fill_between(x, pvs, pvs_base,
@@ -113,14 +113,14 @@ class Visualizer:
             self.axes[4].fill_between(x, pvs, pvs_base,
                 where=pvs < pvs_base, facecolor='b', alpha=0.1)
             self.axes[4].plot(x, pvs, '-k')
-            # 학습 위치 표시
+            # Study point display
             for learning_idx in learning_idxes:
                 self.axes[4].axvline(learning_idx, color='y')
 
-            # 에포크 및 탐험 비율
+            # Epoch and Explore rate.
             self.fig.suptitle('{} \nEpoch:{}/{} e={:.2f}'.format(
                 self.title, epoch_str, num_epoches, epsilon))
-            # 캔버스 레이아웃 조정
+            # Canvas layout control
             self.fig.tight_layout()
             self.fig.subplots_adjust(top=0.85)
 
