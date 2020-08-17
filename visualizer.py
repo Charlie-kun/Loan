@@ -124,25 +124,25 @@ class Visualizer:
             self.fig.tight_layout()
             self.fig.subplots_adjust(top=0.85)
 
-    def clear(self, xlim):
+    def clear(self, xlim):      #Chart reset.
         with lock:
             _axes = self.axes.tolist()
             for ax in _axes[1:]:
-                ax.cla()  # 그린 차트 지우기
-                ax.relim()  # limit를 초기화
-                ax.autoscale()  # 스케일 재설정
-            # y축 레이블 재설정
+                ax.cla()  # delete green chart
+                ax.relim()  # limit reset
+                ax.autoscale()  # scale reset
+            # y axis lables reset
             self.axes[1].set_ylabel('Agent')
             self.axes[2].set_ylabel('V')
             self.axes[3].set_ylabel('P')
             self.axes[4].set_ylabel('PV')
             for ax in _axes:
-                ax.set_xlim(xlim)  # x축 limit 재설정
+                ax.set_xlim(xlim)  # x axis limit reset
                 ax.get_xaxis().get_major_formatter() \
-                    .set_scientific(False)  # 과학적 표기 비활성화
+                    .set_scientific(False)  # Scientifical sign hide
                 ax.get_yaxis().get_major_formatter() \
-                    .set_scientific(False)  # 과학적 표기 비활성화
-                # x축 간격을 일정하게 설정
+                    .set_scientific(False)  # Scientifical sign hide
+                # x axis gap Constantly.
                 ax.ticklabel_format(useOffset=False)
 
     def save(self, path):
