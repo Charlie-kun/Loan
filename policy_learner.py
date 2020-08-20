@@ -26,5 +26,10 @@ class PolicyLearner:
         self.training_data_idx = -1
         #Policy neural network ; input size=learn data size + agent state size
         self.num_features = self.traning_data_shape[1] + self.agent.STATE_DIM
-        self.policy_network=PolicyNetwork(input_dim=self.num_features, output_dim=self.agent.NUM_ACTIONS, lr=lr)
-        self.visualizer=Visualizer()        #visual module
+        self.policy_network = PolicyNetwork(input_dim=self.num_features, output_dim=self.agent.NUM_ACTIONS, lr=lr)
+        self.visualizer = Visualizer()        #visual module
+
+
+        def reset(self):
+            self.sample = None
+            self.training_data_idx = -1
