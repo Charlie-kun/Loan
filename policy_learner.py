@@ -33,3 +33,9 @@ class PolicyLearner:
         def reset(self):
             self.sample = None
             self.training_data_idx = -1
+
+
+        def fit(
+                self, num_epoches=1000, max_memory=60, balance=1000000, discount_factor=0, start_epsilon=.5, learning=True):
+            logger.info("LR: {lr}, DF:{discount_factor}," f"TU=[{Min_trading_unit}, {max_trading_unit}], " "DRT:{delayed_reward_threshold}".format(lr=self.polict_network.lr, discount_factor=discount_factor, Min_trading_unit=self.agent.Min_trading_unit, max_trading_unit=self.agent.max_trading_unit, delayed_reward_threshold=self.agent.delayed_reward_threshold)
+        )
