@@ -39,3 +39,21 @@ class PolicyLearner:
                 self, num_epoches=1000, max_memory=60, balance=1000000, discount_factor=0, start_epsilon=.5, learning=True):
             logger.info("LR: {lr}, DF:{discount_factor}," f"TU=[{Min_trading_unit}, {max_trading_unit}], " "DRT:{delayed_reward_threshold}".format(lr=self.polict_network.lr, discount_factor=discount_factor, Min_trading_unit=self.agent.Min_trading_unit, max_trading_unit=self.agent.max_trading_unit, delayed_reward_threshold=self.agent.delayed_reward_threshold)
         )
+
+
+
+    # Visualize ready
+    # Already visualize because Chart data is not change.
+    self.visualizer.prepare(self.environment.chart_data)
+
+    # Ready for save folder of Result for visualize
+    epoch_summary_dir=os.path.join(settings.BASE_DIR, 'epoch_summary/%s/epoch_summary_%s' % (self.stock_code, settings.timestr))
+    if not os.path.isdir(epoch_summary_dir):
+        os.makedirs(epoch_summary_dir)
+
+    #setting for agent Seed money
+    self.agent.set_balance(balance)
+
+    #information initialize for learn
+    max_portfolio_value=0
+    epoch_win_cnt=0
