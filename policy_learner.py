@@ -70,3 +70,24 @@ class PolicyLearner:
     # Information initialize for learn
     max_portfolio_value = 0
     epoch_win_cnt = 0
+
+    # Learn repeat
+    for epoch in range(num_epoches):
+        # initialize epoches
+        loss = 0.
+        itr_cnt = 0
+        win_cnt = 0
+        exploration_cnt = 0
+        batch_size = 0
+        pos_learning_cnt = 0
+        neg_learning_cnt = 0
+
+        # initialize memory
+        memory_sample = []
+        memory_action = []
+        memory_reward = []
+        memory_prob = []
+        memory_pv = []
+        memory_num_stocks = []
+        memory_exp_idx = []
+        memory_learning_idx = []
