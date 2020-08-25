@@ -91,3 +91,18 @@ class PolicyLearner:
         memory_num_stocks = []
         memory_exp_idx = []
         memory_learning_idx = []
+
+        # Initialize environment, agent, policy neural network
+        self.enviroment.reset()
+        self.agent.reset()
+        self.policy_network.reset()
+        self.reset()
+
+        # Visualizer reset
+        self.visualizer.clear([0, len(self.chart_data)])
+
+        # continued learn so decrease of explore rate.
+        if learning:
+            epsilon = start_epsilon*(1.-float(epoch) / (num_epochs-1))
+        else:
+            epsilon = 0
