@@ -103,6 +103,6 @@ class PolicyLearner:
 
         # continued learn so decrease of explore rate.
         if learning:
-            epsilon = start_epsilon*(1.-float(epoch) / (num_epochs-1))
+            epsilon = start_epsilon*(1.-float(epoch) / (num_epoches-1))
         else:
             epsilon = 0
