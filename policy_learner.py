@@ -106,3 +106,16 @@ class PolicyLearner:
             epsilon = start_epsilon*(1.-float(epoch) / (num_epoches-1))
         else:
             epsilon = 0
+
+    while True:
+        # Create sample
+        next_sample = self._bulid_sample()
+        if next_sample is None:
+            break
+
+        # Decision by Policy neural network or explore
+        action, confidence, exploration =self.agent.decide_action(
+            self.policy_network, self.sample, epsilon)
+
+        # Immediately gets bonus and delay bonus after Decision action.
+        immediate_reward, delay_reward=self.agent.act(action, confidence)
