@@ -47,7 +47,7 @@ class PolicyLearner:
             logger.info("LR: {lr}, DF:{discount_factor}," 
                         "TU=[{min_trading_unit}, {max_trading_unit}], " 
                         "DRT:{delayed_reward_threshold}".format(
-                lr=self.polict_network.lr,
+                lr=self.policy_network.lr,
                 discount_factor=discount_factor,
                 min_trading_unit=self.agent.min_trading_unit,
                 max_trading_unit=self.agent.max_trading_unit,
@@ -107,15 +107,34 @@ class PolicyLearner:
         else:
             epsilon = 0
 
-    while True:
-        # Create sample
-        next_sample = self._bulid_sample()
-        if next_sample is None:
-            break
+        while True:
+            # Create sample
+            next_sample = self._bulid_sample()
+            if next_sample is None:
+                break
 
-        # Decision by Policy neural network or explore
-        action, confidence, exploration =self.agent.decide_action(
-            self.policy_network, self.sample, epsilon)
+            # Decision by Policy neural network or explore
+            action, confidence, exploration =self.agent.decide_action(
+                self.policy_network, self.sample, epsilon)
 
-        # Immediately gets bonus and delay bonus after Decision action.
-        immediate_reward, delay_reward=self.agent.act(action, confidence)
+            # Immediately gets bonus and delay bonus after Decision action.
+            immediate_reward, delay_reward=self.agent.act(action, confidence)
+
+            # Action and result save
+            memory_sample.append(next_sample)
+            memory_action.append(action)
+            memory_reward.append(immediate_reward)
+            memory_pv.append(self.agent.portfolio_value)
+            memory_num_stocks.append(self.agent.num_stocks)
+            memory=[(
+                memory_sample[i],
+                memory_action[i],
+                memory_reward[i])
+                for i in list(range(len(memory_action)))[-max_memory:]
+              ]
+              if exploration:
+                  memory_exp_idx.append(itr_cnt)
+                  memory_prob.append([np.nan]*Agent.NUM_ACTIONS)
+              else:
+                  memory_prob.append(self.policy_network.prob)
+
