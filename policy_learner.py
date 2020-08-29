@@ -144,4 +144,21 @@ class PolicyLearner:
               exploration_cnt+=1 if exploration else 0
               win_cnt +=1 if delayed_reward >0 else 0
 
-
+              # Learn mode and When get a delay bonus has exist, policy neural network reset.
+              if delay_reward == 0 and batch_size >= max_memory:
+                  delay_reward = immediate_reward
+              if learning and delayed_reward !=0:
+                  # batch learn data size
+                  batch_size = min(batch_size, max_memory)
+                  # Create batch learn data.
+                  x, y=self._get_batch(
+                      memory, batch_size, discount_factor, delayed_reward)
+                  if len(x) > 0:
+                      if delay_reward > 0:
+                          pos_learning_cnt += 1
+                      else:
+                          neg_learning_cnt += 1
+                      # Reset Policy neural network.
+                      loss += self.policy_network.train_on_batch(x,y)
+                      memory_learning_idx.append([itr_cnt, delay_reward])
+                  batch_size = 0
