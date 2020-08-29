@@ -138,3 +138,10 @@ class PolicyLearner:
               else:
                   memory_prob.append(self.policy_network.prob)
 
+              # Refresh information for repeat.
+              batch_size+= 1
+              itr_cnt+=1
+              exploration_cnt+=1 if exploration else 0
+              win_cnt +=1 if delayed_reward >0 else 0
+
+
