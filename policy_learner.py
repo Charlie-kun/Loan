@@ -162,3 +162,18 @@ class PolicyLearner:
                       loss += self.policy_network.train_on_batch(x,y)
                       memory_learning_idx.append([itr_cnt, delay_reward])
                   batch_size = 0
+
+        # Epoch information visualize.
+        num_epoches_digit=len(str(num_epoches))
+        epoch_str=str(epoch+1).rjust(num_epoches_digit,'0')
+
+        self.visualizer.plot(
+            epoch_str=epoch_str, num_epoches=num_epoches, epsilon=epsilon,
+            action_list=Agent.ACTIONS, actions=memory_action,
+            num_stocks=memory_num_stocks, outvals=memory_prob,
+            exps=memory_exp_idx, learning=memory_learning_idx,
+            initial_balance=self.agent.initial_balance, pvs=memory_pv
+        )
+        self.visualizer.save(os.path.join(
+            epoch_summary_dir, 'epoch_summary_%s_%s.png' % (
+                settings.timestr, epoch_str)))
