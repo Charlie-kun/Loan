@@ -165,7 +165,7 @@ class PolicyLearner:
 
         # Epoch information visualize.
         num_epoches_digit=len(str(num_epoches))
-        epoch_str=str(epoch+1).rjust(num_epoches_digit,'0')
+        epoch_str=str(epoch+1).rjust(num_epoches_digit,'0')    #check string length
 
         self.visualizer.plot(
             epoch_str=epoch_str, num_epoches=num_epoches, epsilon=epsilon,
