@@ -190,3 +190,9 @@ class PolicyLearner:
                         self.agent.num_stocks,
                         locale.currency(self.agent.portfolio_value, grouping=True),
                         pos_learning_cnt, neg_learning_cnt, loss))
+
+        # learn information reset.
+        max_portfolio_value=max(
+            max_portfolio_value, self.agent.profitloss_value)
+        if self.agent.portfolio_value > self.agent.initial_balance:
+            epoch_win_cnt += 1
