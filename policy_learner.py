@@ -177,3 +177,16 @@ class PolicyLearner:
         self.visualizer.save(os.path.join(
             epoch_summary_dir, 'epoch_summary_%s_%s.png' % (
                 settings.timestr, epoch_str)))
+
+        # epoch information log write.
+        if pos_learning_cnt + neg_learning_cnt > 0:
+            loss /=pos_learning_cnt + neg_learning_cnt
+        logger.info("[Epoch %s/%s]\tEpsilon:%.4f\t#Expl.:%d/%d\t"
+                    "#Buy:%d\t#Sell:%d\t#Hold:%d\t"
+                    "#Stocks:%d\tPV:%s\t"
+                    "POS:%s\tNEG:%s\tLoss:%10.6f"% (
+                        epoch_str, num_epoches, epsilon, exploration_cnt, itr_cnt,
+                        self.agent.num_buy, self.agent.num_sell, self.agent.num_hold,
+                        self.agent.num_stocks,
+                        locale.currency(self.agent.portfolio_value, grouping=True),
+                        pos_learning_cnt, neg_learning_cnt, loss))
