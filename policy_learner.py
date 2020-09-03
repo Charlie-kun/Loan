@@ -196,3 +196,7 @@ class PolicyLearner:
             max_portfolio_value, self.agent.profitloss_value)
         if self.agent.portfolio_value > self.agent.initial_balance:
             epoch_win_cnt += 1
+
+        # learn information log write
+        logger.info("Max PV : %s, \t # Win : %d" %(
+            locale.currenct(max_portfolio_value, grouping=True), epoch_win_cnt))
