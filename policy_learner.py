@@ -221,3 +221,9 @@ class PolicyLearner:
             self.sample.extend(self.agent.get_states())
             return self.sample
         return None
+
+    def trade(slef, model_path=None, balance=2000000):
+        if model_path is None:
+            return
+        self.policy_network.load_model(model_path=model_path)
+        self.fit(balance=balance, num_epoches=1, learning=False)
