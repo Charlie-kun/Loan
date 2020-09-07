@@ -151,13 +151,13 @@ class PolicyLearner:
                         # batch learn data size
                         batch_size = min(batch_size, max_memory)
                         # Create batch learn data.
-                        x, y=self._get_batch(
+                        x, y=self._get_batch(       # ready for batch data
                             memory, batch_size, discount_factor, delayed_reward)
                     if len(x) > 0:
                         if delayed_reward > 0:
-                            pos_learning_cnt += 1
+                            pos_learning_cnt += 1              # Positive learning
                         else:
-                            neg_learning_cnt += 1
+                            neg_learning_cnt += 1           # Negative learning
                         # Reset Policy neural network.
                         loss += self.policy_network.train_on_batch(x,y)
                         memory_learning_idx.append([itr_cnt, delayed_reward])
@@ -165,7 +165,7 @@ class PolicyLearner:
 
                     # Epoch information visualize.
                     num_epoches_digit=len(str(num_epoches))
-                    epoch_str=str(epoch+1).rjust(num_epoches_digit,'0')    #check string length
+                    epoch_str=str(epoch+1).rjust(num_epoches_digit,'0')    # check string length
 
                     self.visualizer.plot(
                         epoch_str=epoch_str, num_epoches=num_epoches, epsilon=epsilon,
@@ -180,7 +180,7 @@ class PolicyLearner:
 
                     # epoch information log write.
                     if pos_learning_cnt + neg_learning_cnt > 0:
-                        loss /=pos_learning_cnt + neg_learning_cnt
+                        loss /= pos_learning_cnt + neg_learning_cnt
                     logger.info("[Epoch %s/%s]\tEpsilon:%.4f\t#Expl.:%d/%d\t"
                                 "#Buy:%d\t#Sell:%d\t#Hold:%d\t"
                                 "#Stocks:%d\tPV:%s\t"
@@ -192,32 +192,32 @@ class PolicyLearner:
                                     pos_learning_cnt, neg_learning_cnt, loss))
 
                     # learn information reset.
-                    max_portfolio_value=max(
+                    max_portfolio_value = max(
                         max_portfolio_value, self.agent.profitloss_value)
                     if self.agent.portfolio_value > self.agent.initial_balance:
                         epoch_win_cnt += 1
 
                     # learn information log write
-                    logger.info("Max PV : %s, \t # Win : %d" %(
-                        locale.currenct(max_portfolio_value, grouping=True), epoch_win_cnt))
+                    logger.info("Max PV : %s, \t # Win : %d" % (
+                        locale.currency(max_portfolio_value, grouping=True), epoch_win_cnt))
 
     def _get_batch(self, memory, batch_size, discount_factor, delayed_reward):
-        x=np.zeros((batch_size, 1, self.num_features))
-        y=np.full((batch_size, self.agent.NUM_ACTIONS), 0.5)
+        x = np.zeros((batch_size, 1, self.num_features))
+        y = np.full((batch_size, self.agent.NUM_ACTIONS), 0.5)
 
         for i, (sample, action, reward) in enumerate(
                 reversed(memory[-batch_size:])):
-            x[i] = np.array(sample).reshape((-1,1,self.num_features))
-            y[i,action]=(delayed_reward+1)/2
-            if discount_factor>0:
-                y[i,action] *= discount_factor ** i
+            x[i] = np.array(sample).reshape((-1, 1, self.num_features))
+            y[i, action] = (delayed_reward+1)/2
+            if discount_factor > 0:
+                y[i, action] *= discount_factor ** i
             return x, y
 
     def _build_sample(self):
         self.environment.observe()
         if len(self.training_data) > self.training_data_idx+1:
             self.training_data_idx += 1
-            self.sample =self.training_data.iloc[self.training_data_idx].tolist()
+            self.sample = self.training_data.iloc[self.training_data_idx].tolist()
             self.sample.extend(self.agent.get_states())
             return self.sample
         return None
