@@ -201,29 +201,29 @@ class PolicyLearner:
                     logger.info("Max PV : %s, \t # Win : %d" % (
                         locale.currency(max_portfolio_value, grouping=True), epoch_win_cnt))
 
-    def _get_batch(self, memory, batch_size, discount_factor, delayed_reward):
-        x = np.zeros((batch_size, 1, self.num_features))
-        y = np.full((batch_size, self.agent.NUM_ACTIONS), 0.5)
+    def _get_batch(self, memory, batch_size, discount_factor, delayed_reward):  # Mini batch data create Function
+        x = np.zeros((batch_size, 1, self.num_features))  # State of learn data and agent
+        y = np.full((batch_size, self.agent.NUM_ACTIONS), 0.5)  # delay bonus.
 
         for i, (sample, action, reward) in enumerate(
                 reversed(memory[-batch_size:])):
-            x[i] = np.array(sample).reshape((-1, 1, self.num_features))
-            y[i, action] = (delayed_reward+1)/2
+            x[i] = np.array(sample).reshape((-1, 1, self.num_features))  # select vector
+            y[i, action] = (delayed_reward+1)/2     # delay bonus setting.
             if discount_factor > 0:
-                y[i, action] *= discount_factor ** i
+                y[i, action] *= discount_factor ** i    # discount_factor
             return x, y
 
     def _build_sample(self):
-        self.environment.observe()
-        if len(self.training_data) > self.training_data_idx+1:
+        self.environment.observe()      # Next index read.
+        if len(self.training_data) > self.training_data_idx+1:  # Check next index
             self.training_data_idx += 1
             self.sample = self.training_data.iloc[self.training_data_idx].tolist()
             self.sample.extend(self.agent.get_states())
             return self.sample
         return None
 
-    def trade(self, model_path=None, balance=2000000):
+    def trade(self, model_path=None, balance=2000000):  # Simulate for trade
         if model_path is None:
             return
         self.policy_network.load_model(model_path=model_path)
-        self.fit(balance=balance, num_epoches=1, learning=False)
+        self.fit(balance=balance, num_epoches=1, learning=False)    # Just simulate, not trade.
