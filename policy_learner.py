@@ -36,14 +36,14 @@ class PolicyLearner:
             input_dim=self.num_features, output_dim=self.agent.NUM_ACTIONS, lr=lr)
         self.visualizer = Visualizer()        # visual module
 
-    def reset(self):
+    def reset(self):        # Epoches reset function.
         self.sample = None
         self.training_data_idx = -1
 
     def fit(
-            self, num_epoches=1000, max_memory=60, balance=1000000,
-            discount_factor=0, start_epsilon=.5, learning=True):
-            logger.info("LR: {lr}, DF:{discount_factor},"
+            self, num_epoches=1000, max_memory=60, balance=1000000,   # Total repeat learning number = num epoches. learning is learning boolean value.
+            discount_factor=0, start_epsilon=.5, learning=True):        # Decided seed moeney. Epsilon is first explore rate.
+            logger.info("LR: {lr}, DF:{discount_factor},"               # Decided discount discount factor
                     "TU=[{min_trading_unit}, {max_trading_unit}], "
                     "DRT:{delayed_reward_threshold}".format(
                 lr=self.policy_network.lr,
@@ -118,7 +118,7 @@ class PolicyLearner:
                         self.policy_network, self.sample, epsilon)
 
                     # Immediately gets bonus and delay bonus after Decision action.
-                    immediate_reward, delay_reward=self.agent.act(action, confidence)
+                    immediate_reward, delayed_reward=self.agent.act(action, confidence)
 
                     # Action and result save
                     memory_sample.append(next_sample)
@@ -154,13 +154,13 @@ class PolicyLearner:
                         x, y=self._get_batch(
                             memory, batch_size, discount_factor, delayed_reward)
                     if len(x) > 0:
-                        if delay_reward > 0:
+                        if delayed_reward > 0:
                             pos_learning_cnt += 1
                         else:
                             neg_learning_cnt += 1
                         # Reset Policy neural network.
                         loss += self.policy_network.train_on_batch(x,y)
-                        memory_learning_idx.append([itr_cnt, delay_reward])
+                        memory_learning_idx.append([itr_cnt, delayed_reward])
                         batch_size = 0
 
                     # Epoch information visualize.
