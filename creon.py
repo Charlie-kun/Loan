@@ -9,7 +9,7 @@ class Creon:
         self.obj_CpCybos = win32com.client.Dispatch('CpUtil.CpCybos')
         self.obj_StockChart = win32com.client.Dispatch('CpSysDib.StockChart')
 
-    def creon_7400_주식차트조회(self, code, date_from, date_to):
+    def creon_7400_주식차트조회(self, code, date_from, date_to):      # self, load code, data start date, end data date.
         b_connected = self.obj_CpCybos.IsConnect
         if b_connected == 0:
             print("연결 실패")
