@@ -20,10 +20,10 @@ class Creon:
         dict_chart = {name: [] for name in list_field_name}
 
         self.obj_StockChart.SetInputValue(0, 'A'+code)
-        self.obj_StockChart.SetInputValue(1, ord('1'))  # 0: 개수, 1: 기간
-        self.obj_StockChart.SetInputValue(2, date_to)  # 종료일
-        self.obj_StockChart.SetInputValue(3, date_from)  # 시작일
-        self.obj_StockChart.SetInputValue(5, list_field_key)  # 필드
+        self.obj_StockChart.SetInputValue(1, ord('1'))  # 0: amount, 1: period
+        self.obj_StockChart.SetInputValue(2, date_to)  # End date
+        self.obj_StockChart.SetInputValue(3, date_from)  # Start date
+        self.obj_StockChart.SetInputValue(5, list_field_key)  # field
         self.obj_StockChart.SetInputValue(6, ord('D'))  # 'D', 'W', 'M', 'm', 'T'
         self.obj_StockChart.BlockRequest()
 
@@ -33,7 +33,7 @@ class Creon:
         if status != 0:
             return None
 
-        cnt = self.obj_StockChart.GetHeaderValue(3)  # 수신개수
+        cnt = self.obj_StockChart.GetHeaderValue(3)  # Number of receive
         for i in range(cnt):
             dict_item = (
                 {name: self.obj_StockChart.GetDataValue(pos, i) 
