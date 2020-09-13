@@ -8,8 +8,8 @@ chart_data = data.DataReader("KRX:005930", "google")
 
 
 from pandas_datareader import data
-import fix_yahoo_finance
-fix_yahoo_finance.pdr_override()
+import yfinance
+yfinance.pdr_override()
 
 chart_data = data.get_data_yahoo(
     '005930.KS',  # 코스피: KS, 코스닥: KQ

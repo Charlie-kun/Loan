@@ -27,7 +27,7 @@ class Creon:
         self.obj_StockChart.SetInputValue(6, ord('D'))  # 'D', 'W', 'M', 'm', 'T'
         self.obj_StockChart.BlockRequest()
 
-        status = self.obj_StockChart.GetDibStatus()
+        status = self.obj_StockChart.GetDibStatus()   # Get a status
         msg = self.obj_StockChart.GetDibMsg1()
         print("통신상태: {} {}".format(status, msg))
         if status != 0:
@@ -39,7 +39,7 @@ class Creon:
                 {name: self.obj_StockChart.GetDataValue(pos, i) 
                 for pos, name in zip(range(len(list_field_name)), list_field_name)}
             )
-            for k, v in dict_item.items():
+            for k, v in dict_item.items():      # Insert value to dictionary
                 dict_chart[k].append(v)
 
         print("차트: {} {}".format(cnt, dict_chart))
@@ -47,5 +47,5 @@ class Creon:
 
 
 if __name__ == '__main__':
-    creon = Creon()
+    creon = Creon()     # Call a creon API
     print(creon.creon_7400_주식차트조회('035420', 20150101, 20171231))
