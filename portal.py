@@ -12,7 +12,7 @@ import yfinance
 yfinance.pdr_override()
 
 chart_data = data.get_data_yahoo(
-    '005930.KS',  # 코스피: KS, 코스닥: KQ
+    '005930.KS',  # KOSPI: KS, KOSDAQ: KQ
     '2016-01-01',
     '2017-12-31'
 )
