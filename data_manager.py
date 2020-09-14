@@ -1,6 +1,10 @@
 import pandas as pd
 import numpy as np
 
+def load_chart_data(fpath)   # Get a CSV file path
+    chart_data=pd.read_csv(fpath, thousasnds=',', header=None)
+    chart_data.colums=['date', 'open', 'high', 'low', 'close', 'volume']
+    return chart_data
 
 COLUMNS_CHART_DATA = ['date', 'open', 'high', 'low', 'close', 'volume']
 
