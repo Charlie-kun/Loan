@@ -51,7 +51,7 @@ COLUMNS_TRAINING_DATA_V2 = [
 
 
 def preprocess(data, ver='v1'):
-    windows = [5, 10, 20, 60, 120]
+    windows = [5, 10, 20, 60, 120]      #Average to window move
     for window in windows:
         data['close_ma{}'.format(window)] = \
             data['close'].rolling(window).mean()
