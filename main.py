@@ -3,7 +3,6 @@ import sys
 import logging
 import argparse
 import json
-
 import settings
 import utils
 import data_manager
@@ -36,23 +35,23 @@ if __name__ == '__main__':
     parser.add_argument('--end_date', default='20171231')
     args = parser.parse_args()
 
-    # Keras Backend 설정
+    # Keras Backend setting
     if args.backend == 'tensorflow':
         os.environ['KERAS_BACKEND'] = 'tensorflow'
     elif args.backend == 'plaidml':
         os.environ['KERAS_BACKEND'] = 'plaidml.keras.backend'
 
-    # 출력 경로 설정
+    # output path setting
     output_path = os.path.join(settings.BASE_DIR, 
         'output/{}_{}_{}'.format(args.output_name, args.rl_method, args.net))
     if not os.path.isdir(output_path):
         os.makedirs(output_path)
 
-    # 파라미터 기록
+    # Record of parameter.
     with open(os.path.join(output_path, 'params.json'), 'w') as f:
         f.write(json.dumps(vars(args)))
     
-    # 로그 기록 설정
+    # log setting
     file_handler = logging.FileHandler(filename=os.path.join(
         output_path, "{}.log".format(args.output_name)), encoding='utf-8')
     stream_handler = logging.StreamHandler(sys.stdout)
@@ -61,12 +60,12 @@ if __name__ == '__main__':
     logging.basicConfig(format="%(message)s",
         handlers=[file_handler, stream_handler], level=logging.DEBUG)
         
-    # 로그, Keras Backend 설정을 먼저하고 RLTrader 모듈들을 이후에 임포트해야 함
+    # Log, Keras Backend setting first and RLTrader module import.
     from agent import Agent
     from learners import DQNLearner, PolicyGradientLearner, \
         ActorCriticLearner, A2CLearner, A3CLearner
 
-    # 모델 경로 준비
+    # ready for model path
     value_network_path = ''
     policy_network_path = ''
     if args.value_network_name is not None:
@@ -92,17 +91,17 @@ if __name__ == '__main__':
     list_max_trading_unit = []
 
     for stock_code in args.stock_code:
-        # 차트 데이터, 학습 데이터 준비
+        # Chart data, ready for learn data.
         chart_data, training_data = data_manager.load_data(
             os.path.join(settings.BASE_DIR, 
             'data/{}/{}.csv'.format(args.ver, stock_code)), 
             args.start_date, args.end_date, ver=args.ver)
         
-        # 최소/최대 투자 단위 설정
+        # Min /Max trading unit setting
         min_trading_unit = max(int(100000 / chart_data.iloc[-1]['close']), 1)
         max_trading_unit = max(int(1000000 / chart_data.iloc[-1]['close']), 1)
 
-        # 공통 파라미터 설정
+        # common parameter setting.
         common_params = {'rl_method': args.rl_method, 
             'delayed_reward_threshold': args.delayed_reward_threshold,
             'net': args.net, 'num_steps': args.num_steps, 'lr': args.lr,
