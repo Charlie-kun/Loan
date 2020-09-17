@@ -107,7 +107,7 @@ if __name__ == '__main__':
             'net': args.net, 'num_steps': args.num_steps, 'lr': args.lr,
             'output_path': output_path, 'reuse_models': args.reuse_models}
 
-        # 강화학습 시작
+        # Start for reinforce learning
         learner = None
         if args.rl_method != 'a3c':
             common_params.update({'stock_code': stock_code,
