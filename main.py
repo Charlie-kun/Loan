@@ -68,14 +68,14 @@ if __name__ == '__main__':      # add parameters
     # ready for model path
     value_network_path = ''
     policy_network_path = ''
-    if args.value_network_name is not None:
+    if args.value_network_name is not None:     # when No value network name, connect network path
         value_network_path = os.path.join(settings.BASE_DIR, 
             'models/{}.h5'.format(args.value_network_name))
     else:
         value_network_path = os.path.join(
             output_path, '{}_{}_value_{}.h5'.format(
                 args.rl_method, args.net, args.output_name))
-    if args.policy_network_name is not None:
+    if args.policy_network_name is not None:     # when No policy network name, connect network path
         policy_network_path = os.path.join(settings.BASE_DIR, 
             'models/{}.h5'.format(args.policy_network_name))
     else:
