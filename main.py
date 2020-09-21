@@ -143,6 +143,7 @@ if __name__ == '__main__':      # add parameters
             list_min_trading_unit.append(min_trading_unit)
             list_max_trading_unit.append(max_trading_unit)
 
+
     if args.rl_method == 'a3c':
         learner = A3CLearner(**{
             **common_params, 
